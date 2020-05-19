@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
     "SqlServeConnection": "",
-    "QuickBuyDB": "server=localhost;uid=root;pwd=@#;database=QuickBuyDB"
+    "QuickBuyDB": "server=localhost;uid=root;pwd=900611Jeffs@#;database=QuickBuyDB"
   }
 }
