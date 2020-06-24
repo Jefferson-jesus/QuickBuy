@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Quickbuy.Dominio.Contratos;
 using Quickbuy.Dominio.Entidades;
+using System;
 
 namespace Quickbuy.Web.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class UsuarioController : ControllerBase
+    //[ApiController]
+    public class UsuarioController : Controller
     {
         private readonly IUsuarioRepository _usuarioRepository;
 
@@ -21,7 +17,7 @@ namespace Quickbuy.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public IActionResult Get()
         {
             try
             {
@@ -29,7 +25,25 @@ namespace Quickbuy.Web.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.ToString());                
+                return BadRequest(ex.ToString());
+            }
+        }
+
+        [HttpPost("VerificarUsuario")]
+        public ActionResult VerificarUsuario([FromBody] Usuario usuario)
+        {
+            try
+            {
+                var usuarioRetorno = _usuarioRepository.Obter(usuario.Email, usuario.Senha);
+
+                if (usuarioRetorno != null)
+                    return Ok(usuario);
+
+                return BadRequest("Usuario ou senha invalido");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
             }
         }
 
@@ -42,6 +56,11 @@ namespace Quickbuy.Web.Controllers
 
                 if (usuarioCadastrado != null)
                     return BadRequest("Usuario já cadastrado no sistema");
+
+                //usuarioCadastrado.Validate();
+
+                //if (!usuarioCadastrado.EhValido)
+                //    return BadRequest(usuarioCadastrado.ObterMensagensValidacao());
 
                 _usuarioRepository.Adiconar(usuario);
 

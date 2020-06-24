@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +41,7 @@ namespace QuickBuy.Web
                                                         m => m.MigrationsAssembly("Quickbuy.Repositorio")));
 
             services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
-
+            services.AddScoped<IUsuarioRepository, UsuarioRepositorio>();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -65,13 +66,14 @@ namespace QuickBuy.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
+            //app.UseRouting();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
+            //app.UseEndpoint(endpoints => endpoints.MapControllers());
 
             app.UseSpa(spa =>
             {
