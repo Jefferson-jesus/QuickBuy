@@ -12,14 +12,14 @@ export class GuardaRotas implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    var auth = sessionStorage.getItem("usuario-autenticado");
-    
-    if (auth == "1") {
+
+    if (this.UsuarioServico.usuario_autenticado()) {
       return true;
     }
+
     this.router.navigate(['/entrar'], { queryParams: { returnUrl: state.url } });
-    // Se Usuario autenticado
-    return true;
+  
+    return false;
   }
 
 }
